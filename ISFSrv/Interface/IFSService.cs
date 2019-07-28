@@ -15,5 +15,7 @@ namespace IFSServ
         [TAG(1001)]
         Task<List<(string filename, string fullname, byte type, byte[] data)>> GetFs(string path);
 
+        [TAG(1002)]
+        Task<bool> Del(string filename);
     }
 }

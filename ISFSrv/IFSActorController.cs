@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace IFSServ
 {
     [ActorOption(maxQueueCount: 1000, ideltime: 3000)]
-    public class FSActorController : ActorController, IFileActor
+    public class IFSActorController : ActorController, IFileActor
     {
         
         [Netx.Actor.Open(OpenAccess.Internal)]
@@ -43,7 +43,19 @@ namespace IFSServ
             }
         }
 
-      
+        [Netx.Actor.Open(OpenAccess.Internal)]
+        public Task<bool> Del(string file)
+        {
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+                return Task.FromResult(true);
+            }
+
+            return Task.FromResult(false);
+        }
+
+
 
         public byte[] GetMD5HashFromFile(string fileName)
         {

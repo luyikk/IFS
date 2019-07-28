@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ImageSrv\IFSServ.csproj" />
+    <ProjectReference Include="..\IFSClient\IFSClient.csproj" />
+    <ProjectReference Include="..\ISFSrv\IFSServ.csproj" />
   </ItemGroup>
 
 </Project>

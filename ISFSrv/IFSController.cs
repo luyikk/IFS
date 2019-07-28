@@ -12,7 +12,7 @@ using IFSServ.Interface;
 
 namespace IFSServ
 {
-    public class IFSController : AsyncController,IFSService
+    public class IFSController : AsyncController, IFSService
     {
         public ILog Log { get; }
         public IFSOption Option { get; }
@@ -24,7 +24,7 @@ namespace IFSServ
         {
             Log = new DefaultLog(logger);
             Option = options.Value;
-           
+
             Verification = verification;
 
             if (!Directory.Exists(Option.Path))
@@ -39,22 +39,27 @@ namespace IFSServ
             return Task.FromResult(LogIn);
         }
 
-
-        public async Task<List<(string filename,string fullname,byte type,byte[] data)>> GetFs(string path)
+        public async Task<bool> Del(string filename)
         {
-            checkLogIN();
-
-            var ls=  Path.GetFullPath( path, BasePath);
-            if (ls.IndexOf(BasePath) == 0)
-            {              
-                return await Actor<IFileActor>().GetFileList(BasePath,ls);                
-            }
-            else
-            {
-                throw new IOException("Permission denied");
-            }
+            var ls = Path.GetFullPath(filename, BasePath);
+            checkPathPermission(ls);
+            return await Actor<IFileActor>().Del(ls);
         }
 
+        public async Task<List<(string filename, string fullname, byte type, byte[] data)>> GetFs(string path)
+        {
+            checkLogIN();
+            var ls = Path.GetFullPath(path, BasePath);
+            checkPathPermission(ls);
+            return await Actor<IFileActor>().GetFileList(BasePath, ls);
+
+        } 
+
+        private void checkPathPermission(string path)
+        {
+            if (path.IndexOf(BasePath) != 0)
+                throw new IOException("Permission denied");
+        }
 
         private void checkLogIN()
         {
