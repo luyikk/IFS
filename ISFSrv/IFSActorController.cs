@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace IFSServ
 {
-    [ActorOption(maxQueueCount: 1000, ideltime: 3000)]
+    //12311
+    [ActorOption(maxQueueCount: 1500, ideltime: 3000)]
     public class IFSActorController : ActorController, IFileActor
     {
         
